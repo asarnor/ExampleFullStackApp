@@ -11,6 +11,15 @@
     "lint": "eslint ./api/. ./config/. ./test/.",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
+  "jest": {
+    "globals": {
+      "__DEV__": true
+    },
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
   "author": "Abdul Sarnor",
   "license": "MIT",
   "dependencies": {
