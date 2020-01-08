@@ -1,11 +1,12 @@
-const express = require("express");
-const router = express.Router();
-const { check, validationResult } = require("express-validator/check");
-const auth = require("../../middleware/auth");
+const express = require('express');
 
-const Post = require("../../models/Post");
-const Profile = require("../../models/Profile");
-const User = require("../../models/User");
+const router = express.Router();
+const { check, validationResult } = require('express-validator/check');
+const auth = require('../../middleware/auth');
+
+const Post = require('../../models/Post');
+const Profile = require('../../models/Profile');
+const User = require('../../models/User');
 
 const PostController = () => {
   // @route    POST api/posts
@@ -18,13 +19,13 @@ const PostController = () => {
     }
 
     try {
-      const user = await User.findById(req.user.id).select("-password");
+      const user = await User.findById(req.user.id).select('-password');
 
       const newPost = new Post({
         text: req.body.text,
         name: user.name,
         avatar: user.avatar,
-        user: req.user.id
+        user: req.user.id,
       });
 
       const post = await newPost.save();
@@ -32,7 +33,7 @@ const PostController = () => {
       res.json(post);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("Server Error");
+      res.status(500).send('Server Error');
     }
   };
 
@@ -45,7 +46,7 @@ const PostController = () => {
       res.json(posts);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("Server Error");
+      res.status(500).send('Server Error');
     }
   };
 
@@ -58,14 +59,14 @@ const PostController = () => {
 
       // Check for ObjectId format and post
       if (!req.params.id.match(/^[0-9a-fA-F]{24}$/) || !post) {
-        return res.status(404).json({ msg: "Post not found" });
+        return res.status(404).json({ msg: 'Post not found' });
       }
 
       res.json(post);
     } catch (err) {
       console.error(err.message);
 
-      res.status(500).send("Server Error");
+      res.status(500).send('Server Error');
     }
   };
 
@@ -78,21 +79,21 @@ const PostController = () => {
 
       // Check for ObjectId format and post
       if (!req.params.id.match(/^[0-9a-fA-F]{24}$/) || !post) {
-        return res.status(404).json({ msg: "Post not found" });
+        return res.status(404).json({ msg: 'Post not found' });
       }
 
       // Check user
       if (post.user.toString() !== req.user.id) {
-        return res.status(401).json({ msg: "User not authorized" });
+        return res.status(401).json({ msg: 'User not authorized' });
       }
 
       await post.remove();
 
-      res.json({ msg: "Post removed" });
+      res.json({ msg: 'Post removed' });
     } catch (err) {
       console.error(err.message);
 
-      res.status(500).send("Server Error");
+      res.status(500).send('Server Error');
     }
   };
 
@@ -105,10 +106,10 @@ const PostController = () => {
 
       // Check if the post has already been liked
       if (
-        post.likes.filter(like => like.user.toString() === req.user.id).length >
+        post.likes.filter((like) => like.user.toString() === req.user.id).length >
         0
       ) {
-        return res.status(400).json({ msg: "Post already liked" });
+        return res.status(400).json({ msg: 'Post already liked' });
       }
 
       post.likes.unshift({ user: req.user.id });
@@ -118,7 +119,7 @@ const PostController = () => {
       res.json(post.likes);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("Server Error");
+      res.status(500).send('Server Error');
     }
   };
 
@@ -131,15 +132,15 @@ const PostController = () => {
 
       // Check if the post has already been liked
       if (
-        post.likes.filter(like => like.user.toString() === req.user.id)
+        post.likes.filter((like) => like.user.toString() === req.user.id)
           .length === 0
       ) {
-        return res.status(400).json({ msg: "Post has not yet been liked" });
+        return res.status(400).json({ msg: 'Post has not yet been liked' });
       }
 
       // Get remove index
       const removeIndex = post.likes
-        .map(like => like.user.toString())
+        .map((like) => like.user.toString())
         .indexOf(req.user.id);
 
       post.likes.splice(removeIndex, 1);
@@ -149,7 +150,7 @@ const PostController = () => {
       res.json(post.likes);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("Server Error");
+      res.status(500).send('Server Error');
     }
   };
 
@@ -163,14 +164,14 @@ const PostController = () => {
     }
 
     try {
-      const user = await User.findById(req.user.id).select("-password");
+      const user = await User.findById(req.user.id).select('-password');
       const post = await Post.findById(req.params.id);
 
       const newComment = {
         text: req.body.text,
         name: user.name,
         avatar: user.avatar,
-        user: req.user.id
+        user: req.user.id,
       };
 
       post.comments.unshift(newComment);
@@ -180,7 +181,7 @@ const PostController = () => {
       res.json(post.comments);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("Server Error");
+      res.status(500).send('Server Error');
     }
   };
 
@@ -192,23 +193,21 @@ const PostController = () => {
       const post = await Post.findById(req.params.id);
 
       // Pull out comment
-      const comment = post.comments.find(
-        comment => comment.id === req.params.comment_id
-      );
+      const comment = post.comments.find((comment) => comment.id === req.params.comment_id);
 
       // Make sure comment exists
       if (!comment) {
-        return res.status(404).json({ msg: "Comment does not exist" });
+        return res.status(404).json({ msg: 'Comment does not exist' });
       }
 
       // Check user
       if (comment.user.toString() !== req.user.id) {
-        return res.status(401).json({ msg: "User not authorized" });
+        return res.status(401).json({ msg: 'User not authorized' });
       }
 
       // Get remove index
       const removeIndex = post.comments
-        .map(comment => comment.id)
+        .map((comment) => comment.id)
         .indexOf(req.params.comment_id);
 
       post.comments.splice(removeIndex, 1);
@@ -218,7 +217,7 @@ const PostController = () => {
       res.json(post.comments);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("Server Error");
+      res.status(500).send('Server Error');
     }
   };
 
@@ -230,7 +229,7 @@ const PostController = () => {
     likePost,
     unlikePost,
     commentPost,
-    deleteComment
+    deleteComment,
   };
 };
 
