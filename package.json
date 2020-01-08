@@ -8,7 +8,7 @@
     "server": "nodemon server",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "lint": "eslint ./api/. ./config/. ./test/.",
+    "lint": "eslint ./config/. ./middleware/. ./models/. ./routes/. ./services/. ./test/.",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "jest": {
@@ -23,7 +23,7 @@
   "author": "Abdul Sarnor",
   "license": "MIT",
   "dependencies": {
-    "bcrypt-nodejs": "^0.0.3",
+    "bcrypt": "^3.0.7",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "config": "^3.1.0",
@@ -40,19 +40,18 @@
     "pg": "^7.14.0",
     "pg-hstore": "^2.3.3",
     "request": "^2.88.0",
-    "sequelize": "^6.0.0",
     "sqlite3": "^4.0.0",
     "upath": "^1.2.0"
   },
   "devDependencies": {
     "concurrently": "^4.1.0",
-    "nodemon": "^1.18.11",
     "cross-env": "^5.1.4",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-import": "^2.19.1",
     "husky": "^0.14.3",
     "jest": "^24.8.0",
+    "nodemon": "^1.18.11",
     "shx": "^0.2.2",
     "supertest": "^3.0.0"
   }
