@@ -5,7 +5,7 @@ const { check, validationResult } = require('express-validator/check');
 const auth = require('../../middleware/auth');
 
 const Post = require('../../models/Post');
-const Profile = require('../../models/Profile');
+// const Profile = require('../../models/Profile');
 const User = require('../../models/User');
 
 // @route    POST api/posts
@@ -213,7 +213,7 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
     const post = await Post.findById(req.params.id);
 
     // Pull out comment
-    const comment = post.comments.find((comment) => comment.id === req.params.comment_id);
+    const comment = post.comments.find((arg) => arg.id === req.params.comment_id);
 
     // Make sure comment exists
     if (!comment) {
@@ -227,7 +227,7 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
 
     // Get remove index
     const removeIndex = post.comments
-      .map((comment) => comment.id)
+      .map((arg) => arg.id)
       .indexOf(req.params.comment_id);
 
     post.comments.splice(removeIndex, 1);

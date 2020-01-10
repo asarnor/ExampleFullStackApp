@@ -1,11 +1,11 @@
-const express = require('express');
+// const express = require('express');
 
-const router = express.Router();
+// const router = express.Router();
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
-const { check, validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator/check');
 
 const User = require('../../models/User');
 
@@ -68,6 +68,9 @@ const UserController = () => {
       console.error(err.message);
       res.status(500).send('Server error');
     }
+  };
+  return {
+    getUser,
   };
 };
 

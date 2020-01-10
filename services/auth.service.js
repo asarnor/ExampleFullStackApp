@@ -3,18 +3,17 @@ const config = require('config');
 
 const secret = process.env.NODE_ENV === 'production' ? process.env.JWT_SECRET : 'secret';
 
-const authService = () => {
-  const issue = (payload) => jwt.sign(payload, secret, { expiresIn: 10800 });
-  const verify = (token, cb) => jwt.verify(token, secret, {}, cb);
+const authService = (res) => {
+  const verify = (token, cb) => jwt.verify(token, config.get('jwtSecret') || secret, {}, cb);
 
-  const _issue = (payload) => {
+  const issue = (payload) => {
     jwt.sign(
       payload,
-      config.get('jwtSecret'),
+      config.get('jwtSecret') || secret,
       { expiresIn: 360000 },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        if (res) { res.json({ token }); }
       },
     );
   };
@@ -22,7 +21,6 @@ const authService = () => {
   return {
     issue,
     verify,
-    _issue,
   };
 };
 

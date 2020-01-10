@@ -243,7 +243,10 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
   try {
     const foundProfile = await Profile.findOne({ user: req.user.id });
     const expIds = foundProfile.experience.map((exp) => exp._id.toString());
-    // if i dont add .toString() it returns this weird mongoose coreArray and the ids are somehow objects and it still deletes anyway even if you put /experience/5
+
+    // if i dont add .toString() it returns this weird mongoose coreArray and
+    // the ids are somehow objects and it still deletes anyway even if you put /experience/5
+
     const removeIndex = expIds.indexOf(req.params.exp_id);
     if (removeIndex === -1) {
       return res.status(500).json({ msg: 'Server error' });
@@ -353,7 +356,8 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
   try {
     const foundProfile = await Profile.findOne({ user: req.user.id });
     const eduIds = foundProfile.education.map((edu) => edu._id.toString());
-    // if i dont add .toString() it returns this weird mongoose coreArray and the ids are somehow objects and it still deletes anyway even if you put /education/5
+    // if i dont add .toString() it returns this weird mongoose coreArray and
+    // the ids are somehow objects and it still deletes anyway even if you put /education/5
     const removeIndex = eduIds.indexOf(req.params.edu_id);
     if (removeIndex === -1) {
       return res.status(500).json({ msg: 'Server error' });
