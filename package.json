@@ -29,7 +29,7 @@
     "config": "^3.1.0",
     "core-js": "^2.6.11",
     "cors": "^2.8.4",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "express-routes-mapper": "^1.0.2",
     "express-validator": "^5.3.1",
     "gravatar": "^1.8.0",
